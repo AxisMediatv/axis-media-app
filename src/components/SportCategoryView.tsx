@@ -16,19 +16,47 @@ type TabType = 'upload' | 'download' | 'thumbnail' | 'resize';
 
 export default function SportCategoryView({ category, onBack }: SportCategoryViewProps) {
   const [activeTab, setActiveTab] = useState<TabType>('upload');
+  
+  // Main upload (for Upload tab)
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [originalFile, setOriginalFile] = useState<File | null>(null);
+  
+  // Thumbnail upload
+  const [thumbnailImage, setThumbnailImage] = useState<string | null>(null);
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  
+  // Resize upload
+  const [resizeImage, setResizeImage] = useState<string | null>(null);
+  const [resizeFile, setResizeFile] = useState<File | null>(null);
 
   const handleImageSelect = (file: File, preview: string) => {
     setOriginalFile(file);
     setSelectedImage(preview);
-    // Auto-switch to resize tab after upload
-    setActiveTab('resize');
   };
 
   const handleImageRemove = () => {
     setSelectedImage(null);
     setOriginalFile(null);
+  };
+
+  const handleThumbnailImageSelect = (file: File, preview: string) => {
+    setThumbnailFile(file);
+    setThumbnailImage(preview);
+  };
+
+  const handleThumbnailImageRemove = () => {
+    setThumbnailImage(null);
+    setThumbnailFile(null);
+  };
+
+  const handleResizeImageSelect = (file: File, preview: string) => {
+    setResizeFile(file);
+    setResizeImage(preview);
+  };
+
+  const handleResizeImageRemove = () => {
+    setResizeImage(null);
+    setResizeFile(null);
   };
 
   const tabs = [
@@ -102,6 +130,12 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
       <div className="min-h-[600px]">
         {activeTab === 'upload' && (
           <div>
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-white mb-4">General Image Upload</h2>
+              <p className="text-gray-400 mb-6">
+                Upload images here for general use. For specific functions, use the dedicated upload areas in Thumbnail and Resize tabs.
+              </p>
+            </div>
             <ImageUpload
               onImageSelect={handleImageSelect}
               selectedImage={selectedImage}
@@ -139,48 +173,68 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
 
         {activeTab === 'thumbnail' && (
           <div>
-            {!selectedImage ? (
-              <div className="text-center py-12">
-                <Grid3x3 className="h-16 w-16 mx-auto mb-4 text-gray-600" />
-                <h3 className="text-xl font-semibold text-white mb-2">Create Thumbnails</h3>
-                <p className="text-gray-400 mb-4">Upload an image first to create thumbnails</p>
-                <button
-                  onClick={() => setActiveTab('upload')}
-                  className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-black rounded font-medium transition-colors"
-                >
-                  Upload Image
-                </button>
-              </div>
-            ) : (
-              <ThumbnailMaker
-                originalImage={selectedImage}
-                selectedCategory={category}
-                originalFile={originalFile!}
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-white mb-4">Create Thumbnails</h2>
+              <p className="text-gray-400 mb-6">
+                Upload an image specifically for thumbnail creation. Generate multiple thumbnail sizes for your content.
+              </p>
+            </div>
+            
+            {!thumbnailImage ? (
+              <ImageUpload
+                onImageSelect={handleThumbnailImageSelect}
+                selectedImage={thumbnailImage}
+                onImageRemove={handleThumbnailImageRemove}
               />
+            ) : (
+              <>
+                <div className="mb-6">
+                  <ImageUpload
+                    onImageSelect={handleThumbnailImageSelect}
+                    selectedImage={thumbnailImage}
+                    onImageRemove={handleThumbnailImageRemove}
+                  />
+                </div>
+                <ThumbnailMaker
+                  originalImage={thumbnailImage}
+                  selectedCategory={category}
+                  originalFile={thumbnailFile!}
+                />
+              </>
             )}
           </div>
         )}
 
         {activeTab === 'resize' && (
           <div>
-            {!selectedImage ? (
-              <div className="text-center py-12">
-                <Maximize2 className="h-16 w-16 mx-auto mb-4 text-gray-600" />
-                <h3 className="text-xl font-semibold text-white mb-2">Resize Your Image</h3>
-                <p className="text-gray-400 mb-4">Upload an image first to resize it</p>
-                <button
-                  onClick={() => setActiveTab('upload')}
-                  className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-black rounded font-medium transition-colors"
-                >
-                  Upload Image
-                </button>
-              </div>
-            ) : (
-              <ImageResizer
-                originalImage={selectedImage}
-                selectedCategory={category}
-                originalFile={originalFile!}
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-white mb-4">Resize Your Image</h2>
+              <p className="text-gray-400 mb-6">
+                Upload an image specifically for resizing. Choose from preset dimensions or create custom sizes.
+              </p>
+            </div>
+            
+            {!resizeImage ? (
+              <ImageUpload
+                onImageSelect={handleResizeImageSelect}
+                selectedImage={resizeImage}
+                onImageRemove={handleResizeImageRemove}
               />
+            ) : (
+              <>
+                <div className="mb-6">
+                  <ImageUpload
+                    onImageSelect={handleResizeImageSelect}
+                    selectedImage={resizeImage}
+                    onImageRemove={handleResizeImageRemove}
+                  />
+                </div>
+                <ImageResizer
+                  originalImage={resizeImage}
+                  selectedCategory={category}
+                  originalFile={resizeFile!}
+                />
+              </>
             )}
           </div>
         )}
