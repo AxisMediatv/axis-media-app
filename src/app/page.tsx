@@ -1,102 +1,208 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import SportsCategories from '@/components/SportsCategories';
+import ImageUpload from '@/components/ImageUpload';
+import ImageResizer from '@/components/ImageResizer';
+import ThumbnailMaker from '@/components/ThumbnailMaker';
+import { ChevronRight, Camera, Maximize2, Grid3x3 } from 'lucide-react';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [step, setStep] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [originalFile, setOriginalFile] = useState<File | null>(null);
+  const [activeTab, setActiveTab] = useState<'resize' | 'thumbnail'>('resize');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleCategorySelect = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    setStep(2);
+  };
+
+  const handleImageSelect = (file: File, preview: string) => {
+    setOriginalFile(file);
+    setSelectedImage(preview);
+    setStep(3);
+  };
+
+  const handleImageRemove = () => {
+    setSelectedImage(null);
+    setOriginalFile(null);
+    setStep(2);
+  };
+
+  const resetApp = () => {
+    setStep(1);
+    setSelectedCategory(null);
+    setSelectedImage(null);
+    setOriginalFile(null);
+    setActiveTab('resize');
+  };
+
+  const steps = [
+    { id: 1, name: 'Category', icon: Grid3x3 },
+    { id: 2, name: 'Upload', icon: Camera },
+    { id: 3, name: 'Process', icon: Maximize2 },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <h1 
+              onClick={resetApp}
+              className="text-2xl font-bold text-gray-900 cursor-pointer hover:text-blue-600 transition-colors"
+            >
+              Axis Media App
+            </h1>
+            
+            {/* Progress Steps */}
+            <nav className="flex items-center space-x-4">
+              {steps.map((stepItem, index) => {
+                const Icon = stepItem.icon;
+                const isActive = step === stepItem.id;
+                const isCompleted = step > stepItem.id;
+                
+                return (
+                  <div key={stepItem.id} className="flex items-center">
+                    <div className={`
+                      flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium transition-colors
+                      ${isActive 
+                        ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                        : isCompleted 
+                          ? 'bg-green-100 text-green-700 border border-green-200'
+                          : 'bg-gray-100 text-gray-500'
+                      }
+                    `}>
+                      <Icon className="h-4 w-4" />
+                      {stepItem.name}
+                    </div>
+                    {index < steps.length - 1 && (
+                      <ChevronRight className="h-4 w-4 text-gray-400 ml-2" />
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+          </div>
         </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {step === 1 && (
+          <SportsCategories
+            selectedCategory={selectedCategory}
+            onCategorySelect={handleCategorySelect}
+          />
+        )}
+
+        {step === 2 && (
+          <>
+            {/* Breadcrumb */}
+            <div className="mb-6">
+              <button
+                onClick={() => setStep(1)}
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+              >
+                ← Back to Categories
+              </button>
+              {selectedCategory && (
+                <p className="text-gray-600 mt-1">
+                  Selected category: <span className="font-medium capitalize">{selectedCategory}</span>
+                </p>
+              )}
+            </div>
+            
+            <ImageUpload
+              onImageSelect={handleImageSelect}
+              selectedImage={selectedImage}
+              onImageRemove={handleImageRemove}
+            />
+          </>
+        )}
+
+        {step === 3 && selectedImage && originalFile && selectedCategory && (
+          <>
+            {/* Breadcrumb */}
+            <div className="mb-6">
+              <button
+                onClick={() => setStep(2)}
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+              >
+                ← Back to Upload
+              </button>
+              <p className="text-gray-600 mt-1">
+                Category: <span className="font-medium capitalize">{selectedCategory}</span> | 
+                File: <span className="font-medium">{originalFile.name}</span>
+              </p>
+            </div>
+
+            {/* Tab Navigation */}
+            <div className="mb-8">
+              <div className="border-b border-gray-200">
+                <nav className="-mb-px flex space-x-8">
+                  <button
+                    onClick={() => setActiveTab('resize')}
+                    className={`
+                      py-2 px-1 border-b-2 font-medium text-sm transition-colors
+                      ${activeTab === 'resize'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      }
+                    `}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Maximize2 className="h-4 w-4" />
+                      Image Resizer
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('thumbnail')}
+                    className={`
+                      py-2 px-1 border-b-2 font-medium text-sm transition-colors
+                      ${activeTab === 'thumbnail'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      }
+                    `}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Grid3x3 className="h-4 w-4" />
+                      Thumbnail Maker
+                    </div>
+                  </button>
+                </nav>
+              </div>
+            </div>
+
+            {/* Tab Content */}
+            {activeTab === 'resize' ? (
+              <ImageResizer
+                originalImage={selectedImage}
+                selectedCategory={selectedCategory}
+                originalFile={originalFile}
+              />
+            ) : (
+              <ThumbnailMaker
+                originalImage={selectedImage}
+                selectedCategory={selectedCategory}
+                originalFile={originalFile}
+              />
+            )}
+          </>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="bg-white border-t mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="text-center text-gray-500 text-sm">
+            © 2025 Axis Media App - Resize your sports photos with ease
+          </div>
+        </div>
       </footer>
     </div>
   );
