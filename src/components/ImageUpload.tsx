@@ -58,15 +58,15 @@ export default function ImageUpload({ onImageSelect, selectedImage, onImageRemov
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-bold text-center mb-6">Upload Your Image</h2>
+      <h2 className="text-2xl font-bold text-center mb-6 text-white">Upload Your Image</h2>
       
       {!selectedImage ? (
         <div
           className={`
             border-2 border-dashed rounded-lg p-12 text-center transition-all cursor-pointer
             ${isDragging 
-              ? 'border-blue-500 bg-blue-50' 
-              : 'border-gray-300 hover:border-gray-400'
+              ? 'border-teal-400 bg-gray-800' 
+              : 'border-gray-600 hover:border-teal-500 bg-gray-900'
             }
           `}
           onDragOver={handleDragOver}
@@ -75,10 +75,10 @@ export default function ImageUpload({ onImageSelect, selectedImage, onImageRemov
           onClick={handleUploadClick}
         >
           <Upload className="mx-auto h-16 w-16 text-gray-400 mb-4" />
-          <p className="text-lg font-medium text-gray-700 mb-2">
+          <p className="text-lg font-medium text-white mb-2">
             Drop your image here or click to browse
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-400">
             Supports JPG, PNG, GIF, WebP formats
           </p>
           
@@ -92,7 +92,7 @@ export default function ImageUpload({ onImageSelect, selectedImage, onImageRemov
         </div>
       ) : (
         <div className="relative">
-          <div className="border rounded-lg p-4 bg-gray-50">
+          <div className="border border-gray-600 rounded-lg p-4 bg-gray-900">
             <img
               src={selectedImage}
               alt="Selected"

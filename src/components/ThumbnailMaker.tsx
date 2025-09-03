@@ -126,16 +126,16 @@ export default function ThumbnailMaker({ originalImage, selectedCategory, origin
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
-      <h2 className="text-2xl font-bold text-center mb-6">Create Thumbnails</h2>
+      <h2 className="text-2xl font-bold text-center mb-6 text-white">Create Thumbnails</h2>
       
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Size Selection */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">Select Thumbnail Sizes</h3>
+          <h3 className="text-lg font-semibold mb-4 text-white">Select Thumbnail Sizes</h3>
           <div className="space-y-3 mb-6">
             {thumbnailSizes.map((size) => (
               <div key={size.id} className="space-y-2">
-                <label className="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                <label className="flex items-center space-x-3 p-3 border border-gray-600 rounded-lg cursor-pointer hover:bg-gray-800 bg-gray-900">
                   <input
                     type="checkbox"
                     checked={selectedSizes.has(size.id)}
@@ -143,18 +143,18 @@ export default function ThumbnailMaker({ originalImage, selectedCategory, origin
                     className="w-4 h-4 text-blue-600"
                   />
                   <div className="flex-1">
-                    <div className="font-medium">{size.name}</div>
+                    <div className="font-medium text-white">{size.name}</div>
                     {size.id !== 'custom' ? (
                       <>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm text-gray-300">
                           {size.width} × {size.height}px
                         </div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-400">
                           {size.description}
                         </div>
                       </>
                     ) : (
-                      <div className="text-sm text-gray-600">
+                      <div className="text-sm text-gray-300">
                         Specify custom dimensions
                       </div>
                     )}
@@ -164,7 +164,7 @@ export default function ThumbnailMaker({ originalImage, selectedCategory, origin
                 {size.id === 'custom' && selectedSizes.has('custom') && (
                   <div className="ml-7 flex gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Width
                       </label>
                       <input
@@ -173,11 +173,11 @@ export default function ThumbnailMaker({ originalImage, selectedCategory, origin
                         onChange={(e) => setCustomWidth(Number(e.target.value))}
                         min="50"
                         max="2000"
-                        className="w-20 px-2 py-1 border rounded"
+                        className="w-20 px-2 py-1 border border-gray-600 rounded bg-gray-800 text-white"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Height
                       </label>
                       <input
@@ -186,7 +186,7 @@ export default function ThumbnailMaker({ originalImage, selectedCategory, origin
                         onChange={(e) => setCustomHeight(Number(e.target.value))}
                         min="50"
                         max="2000"
-                        className="w-20 px-2 py-1 border rounded"
+                        className="w-20 px-2 py-1 border border-gray-600 rounded bg-gray-800 text-white"
                       />
                     </div>
                   </div>
@@ -198,7 +198,7 @@ export default function ThumbnailMaker({ originalImage, selectedCategory, origin
           <button
             onClick={generateSelectedThumbnails}
             disabled={selectedSizes.size === 0 || isGenerating}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white rounded-lg transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-teal-500 hover:bg-teal-600 disabled:bg-gray-700 text-black disabled:text-gray-400 rounded-lg transition-colors font-medium"
           >
             {isGenerating ? (
               <>
@@ -217,11 +217,11 @@ export default function ThumbnailMaker({ originalImage, selectedCategory, origin
         {/* Thumbnail Preview */}
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Generated Thumbnails</h3>
+            <h3 className="text-lg font-semibold text-white">Generated Thumbnails</h3>
             {thumbnails.size > 0 && (
               <button
                 onClick={downloadAllThumbnails}
-                className="flex items-center gap-2 px-3 py-1 text-sm bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
+                className="flex items-center gap-2 px-3 py-1 text-sm bg-green-600 hover:bg-green-700 text-white rounded transition-colors"
               >
                 <Download className="h-3 w-3" />
                 Download All
@@ -229,9 +229,9 @@ export default function ThumbnailMaker({ originalImage, selectedCategory, origin
             )}
           </div>
           
-          <div className="border rounded-lg p-4 bg-gray-50 min-h-[400px]">
+          <div className="border border-gray-600 rounded-lg p-4 bg-gray-900 min-h-[400px]">
             {thumbnails.size === 0 ? (
-              <div className="flex items-center justify-center h-full text-gray-500">
+              <div className="flex items-center justify-center h-full text-gray-400">
                 Select sizes and generate thumbnails to see preview
               </div>
             ) : (
@@ -247,12 +247,12 @@ export default function ThumbnailMaker({ originalImage, selectedCategory, origin
                         alt={`Thumbnail ${size?.name}`}
                         className="w-full max-w-32 mx-auto rounded shadow-sm border"
                       />
-                      <p className="text-sm text-gray-600 mt-2">
+                      <p className="text-sm text-gray-300 mt-2">
                         {size?.name} ({dimensions}px)
                       </p>
                       <button
                         onClick={() => downloadThumbnail(sizeId)}
-                        className="mt-1 px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
+                        className="mt-1 px-2 py-1 text-xs bg-teal-500 hover:bg-teal-600 text-black rounded transition-colors font-medium"
                       >
                         Download
                       </button>

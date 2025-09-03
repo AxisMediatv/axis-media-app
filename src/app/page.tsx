@@ -46,14 +46,14 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-gray-900 shadow-lg border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <h1 
               onClick={resetApp}
-              className="text-2xl font-bold text-gray-900 cursor-pointer hover:text-blue-600 transition-colors"
+              className="text-2xl font-bold text-white cursor-pointer hover:text-teal-400 transition-colors"
             >
               Axis Media App
             </h1>
@@ -68,19 +68,19 @@ export default function Home() {
                 return (
                   <div key={stepItem.id} className="flex items-center">
                     <div className={`
-                      flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium transition-colors
+                      flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium transition-colors border
                       ${isActive 
-                        ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                        ? 'bg-teal-500 text-black border-teal-400' 
                         : isCompleted 
-                          ? 'bg-green-100 text-green-700 border border-green-200'
-                          : 'bg-gray-100 text-gray-500'
+                          ? 'bg-gray-600 text-white border-gray-500'
+                          : 'bg-gray-800 text-gray-400 border-gray-700'
                       }
                     `}>
                       <Icon className="h-4 w-4" />
                       {stepItem.name}
                     </div>
                     {index < steps.length - 1 && (
-                      <ChevronRight className="h-4 w-4 text-gray-400 ml-2" />
+                      <ChevronRight className="h-4 w-4 text-gray-500 ml-2" />
                     )}
                   </div>
                 );
@@ -105,13 +105,13 @@ export default function Home() {
             <div className="mb-6">
               <button
                 onClick={() => setStep(1)}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                className="text-teal-400 hover:text-teal-300 text-sm font-medium"
               >
                 ← Back to Categories
               </button>
               {selectedCategory && (
-                <p className="text-gray-600 mt-1">
-                  Selected category: <span className="font-medium capitalize">{selectedCategory}</span>
+                <p className="text-gray-300 mt-1">
+                  Selected category: <span className="font-medium capitalize text-white">{selectedCategory}</span>
                 </p>
               )}
             </div>
@@ -130,27 +130,27 @@ export default function Home() {
             <div className="mb-6">
               <button
                 onClick={() => setStep(2)}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                className="text-teal-400 hover:text-teal-300 text-sm font-medium"
               >
                 ← Back to Upload
               </button>
-              <p className="text-gray-600 mt-1">
-                Category: <span className="font-medium capitalize">{selectedCategory}</span> | 
-                File: <span className="font-medium">{originalFile.name}</span>
+              <p className="text-gray-300 mt-1">
+                Category: <span className="font-medium capitalize text-white">{selectedCategory}</span> | 
+                File: <span className="font-medium text-white">{originalFile.name}</span>
               </p>
             </div>
 
             {/* Tab Navigation */}
             <div className="mb-8">
-              <div className="border-b border-gray-200">
+              <div className="border-b border-gray-600">
                 <nav className="-mb-px flex space-x-8">
                   <button
                     onClick={() => setActiveTab('resize')}
                     className={`
                       py-2 px-1 border-b-2 font-medium text-sm transition-colors
                       ${activeTab === 'resize'
-                        ? 'border-blue-500 text-blue-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        ? 'border-teal-400 text-teal-400'
+                        : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'
                       }
                     `}
                   >
@@ -164,8 +164,8 @@ export default function Home() {
                     className={`
                       py-2 px-1 border-b-2 font-medium text-sm transition-colors
                       ${activeTab === 'thumbnail'
-                        ? 'border-blue-500 text-blue-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        ? 'border-teal-400 text-teal-400'
+                        : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'
                       }
                     `}
                   >
@@ -197,9 +197,9 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t mt-16">
+      <footer className="bg-gray-900 border-t border-gray-700 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="text-center text-gray-500 text-sm">
+          <div className="text-center text-gray-400 text-sm">
             © 2025 Axis Media App - Resize your sports photos with ease
           </div>
         </div>
