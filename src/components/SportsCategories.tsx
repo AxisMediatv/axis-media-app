@@ -7,18 +7,16 @@ export interface SportCategory {
 }
 
 export const sportsCategories: SportCategory[] = [
-  { id: 'football', name: 'Football', icon: '🏈' },
-  { id: 'basketball', name: 'Basketball', icon: '🏀' },
-  { id: 'baseball', name: 'Baseball', icon: '⚾' },
-  { id: 'soccer', name: 'Soccer', icon: '⚽' },
-  { id: 'tennis', name: 'Tennis', icon: '🎾' },
-  { id: 'golf', name: 'Golf', icon: '⛳' },
-  { id: 'swimming', name: 'Swimming', icon: '🏊' },
-  { id: 'running', name: 'Running', icon: '🏃' },
-  { id: 'cycling', name: 'Cycling', icon: '🚴' },
-  { id: 'hockey', name: 'Hockey', icon: '🏒' },
-  { id: 'volleyball', name: 'Volleyball', icon: '🏐' },
-  { id: 'boxing', name: 'Boxing', icon: '🥊' },
+  { id: 'snow', name: 'SNOW', icon: '❄️' },
+  { id: 'freeski', name: 'FREESKI', icon: '🎿' },
+  { id: 'skate', name: 'SKATE', icon: '🛹' },
+  { id: 'surf', name: 'SURF', icon: '🏄' },
+  { id: 'mtb', name: 'MTB', icon: '🚵' },
+  { id: 'bmx', name: 'BMX', icon: '🚴' },
+  { id: 'climb', name: 'CLIMB', icon: '🧗' },
+  { id: 'ski', name: 'SKI', icon: '⛷️' },
+  { id: 'parkour', name: 'PARKOUR', icon: '🏃' },
+  { id: 'all-axis', name: 'ALL AXIS', icon: '🎯' },
 ];
 
 interface SportsCategoriesProps {
