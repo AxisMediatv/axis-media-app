@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, ChangeEvent } from 'react';
+import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import { Upload, Download, X, Play, Image as ImageIcon, Trash2 } from 'lucide-react';
 
 export interface Backdrop {
@@ -24,6 +24,27 @@ export default function BackdropManager({ category, onClose, embedded = false }:
   const [isUploading, setIsUploading] = useState(false);
   const [newBackdropTitle, setNewBackdropTitle] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load default images from public folder
+  const loadDefaultBackdrops = async () => {
+    const defaultBackdrops: Record<string, Backdrop[]> = {
+      'snow': [
+        { id: 'snow-1', title: 'Snow Mountain Peak', type: 'image', url: '/backdrops/snow/snow-backdrop-1.png', category: 'snow', uploadedAt: new Date() },
+        { id: 'snow-2', title: 'Snowy Forest Trail', type: 'image', url: '/backdrops/snow/snow-backdrop-2.png', category: 'snow', uploadedAt: new Date() },
+        { id: 'snow-3', title: 'Winter Landscape', type: 'image', url: '/backdrops/snow/snow-backdrop-3.png', category: 'snow', uploadedAt: new Date() },
+        { id: 'snow-4', title: 'Alpine Snow Scene', type: 'image', url: '/backdrops/snow/snow-backdrop-4.png', category: 'snow', uploadedAt: new Date() },
+      ],
+      // Add more categories as you add images
+    };
+
+    const categoryBackdrops = defaultBackdrops[category] || [];
+    setBackdrops(categoryBackdrops);
+  };
+
+  // Load default backdrops when component mounts
+  useEffect(() => {
+    loadDefaultBackdrops();
+  }, [category]);
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;

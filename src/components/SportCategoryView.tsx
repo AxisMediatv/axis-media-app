@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Upload, Download, Grid3x3, Maximize2, ArrowLeft } from 'lucide-react';
+import { Download, Grid3x3, Maximize2, ArrowLeft } from 'lucide-react';
 import ImageUpload from './ImageUpload';
 import ImageResizer from './ImageResizer';
 import ThumbnailMaker from './ThumbnailMaker';
@@ -12,14 +12,10 @@ interface SportCategoryViewProps {
   onBack: () => void;
 }
 
-type TabType = 'upload' | 'download' | 'thumbnail' | 'resize';
+type TabType = 'thumbnail' | 'resize' | 'download';
 
 export default function SportCategoryView({ category, onBack }: SportCategoryViewProps) {
-  const [activeTab, setActiveTab] = useState<TabType>('upload');
-  
-  // Main upload (for Upload tab)
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [originalFile, setOriginalFile] = useState<File | null>(null);
+  const [activeTab, setActiveTab] = useState<TabType>('thumbnail');
   
   // Thumbnail upload
   const [thumbnailImage, setThumbnailImage] = useState<string | null>(null);
@@ -28,16 +24,6 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
   // Resize upload
   const [resizeImage, setResizeImage] = useState<string | null>(null);
   const [resizeFile, setResizeFile] = useState<File | null>(null);
-
-  const handleImageSelect = (file: File, preview: string) => {
-    setOriginalFile(file);
-    setSelectedImage(preview);
-  };
-
-  const handleImageRemove = () => {
-    setSelectedImage(null);
-    setOriginalFile(null);
-  };
 
   const handleThumbnailImageSelect = (file: File, preview: string) => {
     setThumbnailFile(file);
@@ -60,10 +46,9 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
   };
 
   const tabs = [
-    { id: 'upload' as TabType, name: 'Upload', icon: Upload },
-    { id: 'download' as TabType, name: 'Download Images', icon: Download },
     { id: 'thumbnail' as TabType, name: 'Thumbnail', icon: Grid3x3 },
     { id: 'resize' as TabType, name: 'Resize Your Image', icon: Maximize2 },
+    { id: 'download' as TabType, name: 'Download Images', icon: Download },
   ];
 
   const getCategoryIcon = (categoryId: string) => {
@@ -128,49 +113,6 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
 
       {/* Tab Content */}
       <div className="min-h-[600px]">
-        {activeTab === 'upload' && (
-          <div>
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-white mb-4">General Image Upload</h2>
-              <p className="text-gray-400 mb-6">
-                Upload images here for general use. For specific functions, use the dedicated upload areas in Thumbnail and Resize tabs.
-              </p>
-            </div>
-            <ImageUpload
-              onImageSelect={handleImageSelect}
-              selectedImage={selectedImage}
-              onImageRemove={handleImageRemove}
-            />
-            {selectedImage && (
-              <div className="mt-6 text-center">
-                <p className="text-gray-300 mb-4">Great! Your image is uploaded.</p>
-                <div className="flex justify-center gap-4">
-                  <button
-                    onClick={() => setActiveTab('resize')}
-                    className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-black rounded font-medium transition-colors"
-                  >
-                    Resize Image →
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('thumbnail')}
-                    className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded font-medium transition-colors"
-                  >
-                    Create Thumbnails →
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'download' && (
-          <BackdropManager
-            category={category}
-            onClose={() => {}} // Empty since it's embedded, not a modal
-            embedded={true}
-          />
-        )}
-
         {activeTab === 'thumbnail' && (
           <div>
             <div className="text-center mb-8">
@@ -237,6 +179,14 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
               </>
             )}
           </div>
+        )}
+
+        {activeTab === 'download' && (
+          <BackdropManager
+            category={category}
+            onClose={() => {}} // Empty since it's embedded, not a modal
+            embedded={true}
+          />
         )}
       </div>
     </div>
