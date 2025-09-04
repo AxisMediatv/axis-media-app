@@ -17,9 +17,10 @@ interface BackdropManagerProps {
   category: string;
   onClose: () => void;
   embedded?: boolean;
+  downloadOnly?: boolean;
 }
 
-export default function BackdropManager({ category, onClose, embedded = false }: BackdropManagerProps) {
+export default function BackdropManager({ category, onClose, embedded = false, downloadOnly = false }: BackdropManagerProps) {
   const [backdrops, setBackdrops] = useState<Backdrop[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [newBackdropTitle, setNewBackdropTitle] = useState('');
@@ -134,6 +135,7 @@ export default function BackdropManager({ category, onClose, embedded = false }:
     return (
       <>
         {/* Upload Section */}
+        {!downloadOnly && (
         <div className="mb-8">
           <h3 className="text-lg font-semibold text-white mb-4">Upload New Backdrop</h3>
           <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -165,12 +167,24 @@ export default function BackdropManager({ category, onClose, embedded = false }:
             className="hidden"
           />
         </div>
+        )}
 
         {/* Backdrops Grid */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">
             Available Backdrops ({backdrops.length})
           </h3>
+          
+          {/* Category Headers */}
+          <div className="mb-6 space-y-2">
+            <h3 className="text-lg font-semibold text-white mb-4">Images (1)</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Videos (0)</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Pictures (1)</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">B-Roll (1)</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Studio Backdrops (1)</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Intro Videos (0)</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Outro Videos/Credits (0)</h3>
+          </div>
           
           {backdrops.length === 0 ? (
             <div className="text-center py-12 text-gray-400">

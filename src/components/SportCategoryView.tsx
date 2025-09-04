@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Download, Grid3x3, Maximize2, ArrowLeft } from 'lucide-react';
+import { Download, Grid3x3, Maximize2, ArrowLeft, Upload } from 'lucide-react';
 import ImageUpload from './ImageUpload';
 import ImageResizer from './ImageResizer';
 import ThumbnailMaker from './ThumbnailMaker';
@@ -12,7 +12,7 @@ interface SportCategoryViewProps {
   onBack: () => void;
 }
 
-type TabType = 'thumbnail' | 'resize' | 'download';
+type TabType = 'thumbnail' | 'resize' | 'upload-media' | 'download';
 
 export default function SportCategoryView({ category, onBack }: SportCategoryViewProps) {
   const [activeTab, setActiveTab] = useState<TabType>('thumbnail');
@@ -48,6 +48,7 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
   const tabs = [
     { id: 'thumbnail' as TabType, name: 'Thumbnail', icon: Grid3x3 },
     { id: 'resize' as TabType, name: 'Resize Your Image', icon: Maximize2 },
+    { id: 'upload-media' as TabType, name: 'Upload Media', icon: Upload },
     { id: 'download' as TabType, name: 'Download Images', icon: Download },
   ];
 
@@ -181,12 +182,37 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
           </div>
         )}
 
+        {activeTab === 'upload-media' && (
+          <div>
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-white mb-4">Upload New Backdrops</h2>
+              <p className="text-gray-400 mb-6">
+                Upload high-quality backdrop images and videos for the {category.toUpperCase()} category. These will be available for all users to download.
+              </p>
+            </div>
+            <BackdropManager
+              category={category}
+              onClose={() => {}}
+              embedded={true}
+            />
+          </div>
+        )}
+
         {activeTab === 'download' && (
-          <BackdropManager
-            category={category}
-            onClose={() => {}} // Empty since it's embedded, not a modal
-            embedded={true}
-          />
+          <div>
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-white mb-4">Download Media</h2>
+              <p className="text-gray-400 mb-6">
+                Browse and download high-quality backdrops for your {category.toUpperCase()} content.
+              </p>
+            </div>
+            <BackdropManager
+              category={category}
+              onClose={() => {}}
+              embedded={true}
+              downloadOnly={true}
+            />
+          </div>
         )}
       </div>
     </div>
