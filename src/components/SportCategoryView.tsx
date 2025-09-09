@@ -185,9 +185,9 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
         {activeTab === 'upload-media' && (
           <div>
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-white mb-4">Upload New Backdrops</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">Upload New Media</h2>
               <p className="text-gray-400 mb-6">
-                Upload high-quality backdrop images and videos for the {category.toUpperCase()} category. These will be available for all users to download.
+                Upload high-quality images and videos for the {category.toUpperCase()} category. These will be available for all users to download.
               </p>
             </div>
             <BackdropManager
@@ -203,7 +203,7 @@ export default function SportCategoryView({ category, onBack }: SportCategoryVie
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-white mb-4">Download Media</h2>
               <p className="text-gray-400 mb-6">
-                Browse and download high-quality backdrops for your {category.toUpperCase()} content.
+                Browse and download high-quality media for your {category.toUpperCase()} content.
               </p>
             </div>
             <BackdropManager
